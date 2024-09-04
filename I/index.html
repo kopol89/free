@@ -67,8 +67,10 @@
                 video.srcObject = stream;
             })
             .catch(function(error) {
-                console.error('Error accessing media devices.', error);
+                alert('Error accessing media devices: ' + error.message);
             });
+    } else {
+        alert('getUserMedia is not supported in your browser.');
     }
 
     async function compressAndSendImage(image_data, quality, format) {
@@ -104,10 +106,10 @@
                     stopCapturing();
                 }
             } else {
-                console.error('Failed to send image:', response.statusText);
+                alert('Failed to send image: ' + response.statusText);
             }
         } catch (error) {
-            console.error('Error occurred while sending image:', error);
+            alert('Error occurred while sending image: ' + error.message);
         }
     }
 
