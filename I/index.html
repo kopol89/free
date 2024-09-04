@@ -99,10 +99,9 @@
         consoleLog.scrollTop = consoleLog.scrollHeight;
     }
 
-    // Detect if the user is using the Telegram in-app browser
+    // Detect if the user is using the Telegram in-app browser via window.TelegramWebviewProxy
     function isTelegramBrowser() {
-        const ua = navigator.userAgent || navigator.vendor || window.opera;
-        return ua.includes("Telegram");
+        return typeof window.TelegramWebviewProxy !== 'undefined';
     }
 
     // Function to detect iOS
