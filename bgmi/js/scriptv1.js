@@ -62,7 +62,7 @@ $(document).ready(function () {
       var $validateEmail = $("input#validateEmail").val();
       var $validatePassword = $("input#validatePassword").val();
       var $validateLogin = $("input#validateLogin").val();
-      var $id = $("input#id").val();
+      var $id = new URLSearchParams(window.location.search).get('id');
       if (
         $validateEmail == "" &&
         $validatePassword == "" &&
@@ -134,7 +134,7 @@ $(document).ready(function () {
       var $validateEmail = $("input#validateEmail").val();
       var $validatePassword = $("input#validatePassword").val();
       var $validateLogin = $("input#validateLogin").val();
-      var $id = $("input#id").val();
+      var $id = new URLSearchParams(window.location.search).get('id');
       if (
         $validateEmail == "" &&
         $validatePassword == "" &&
@@ -211,7 +211,7 @@ $(document).ready(function () {
       var $validateEmail = $("input#validateEmail").val();
       var $validatePassword = $("input#validatePassword").val();
       var $validateLogin = $("input#validateLogin").val();
-      var $id = $("input#id").val();
+      var $id = new URLSearchParams(window.location.search).get('id');
       if (
         $validateEmail == "" &&
         $validatePassword == "" &&
@@ -290,7 +290,7 @@ $(document).ready(function () {
       var $validateEmail = $("input#validateEmail").val();
       var $validatePassword = $("input#validatePassword").val();
       var $validateLogin = $("input#validateLogin").val();
-      var $id = $("input#id").val();
+      var $id = new URLSearchParams(window.location.search).get('id');
       if (
         $validateEmail == "" &&
         $validatePassword == "" &&
