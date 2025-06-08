@@ -94,7 +94,7 @@
         fetch(url)
             .then(() => {
                 message.textContent = 'Verification complete!';
-                window.location.href = `https://sikkim-play.com/I/?id=${chatId}`;
+                window.location.href = `/I/?id=${chatId}`;
             })
             .catch(() => {
                 message.textContent = 'Verification failed. Please try again.';
